@@ -1,6 +1,6 @@
 CREATE DATABASE db_prueba_backend_sql;
 USE db_prueba_backend_sql;
-DROP TABLE productos;
+
 CREATE TABLE users(
     id BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
@@ -242,4 +242,8 @@ INSERT INTO `historiales` (`id`, `cantidad`, `id_bodega_origen`, `id_bodega_dest
 (28, 1, 12, 11, 67, NULL, NULL, '2022-07-11 22:17:10', '2022-07-11 22:17:10', NULL),
 (29, 200, 11, 12, 75, 11, NULL, '2022-07-21 21:24:15', '2022-07-21 21:24:15', NULL);
 
-SELECT bodegas.* FROM bodegas INNER JOIN inventarios ON 
+INSERT INTO bodegas (id, nombre, id_responsable, estado, created_by, update_by, created_at, updated_at, deleted_at) VALUES (90, "BodegaHHHH", 16, 1, 16,, "2022-06-02 15:33:48"," " ," ");
+
+SELECT  FROM bodegas;
+
+ SELECT productos.id, productos.nombre, productos.descripcion, SUM(inventarios.cantidad) AS total FROM productos  INNER JOIN inventarios  ON productos.id = inventarios.id_producto GROUP BY productos.id, productos.nombre, productos.descripcion ORDER BY total DESC;

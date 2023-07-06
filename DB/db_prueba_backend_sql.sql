@@ -246,4 +246,7 @@ INSERT INTO bodegas (id, nombre, id_responsable, estado, created_by, update_by, 
 
 SELECT * FROM inventarios;
 
+SELECT id, id_producto, id_bodega, cantidad FROM inventarios;
+
+UPDATE inventarios SET id_producto = ?, id_bodega = ?, cantidad = ? WHERE id = ?; 
  SELECT productos.id, productos.nombre, productos.descripcion, SUM(inventarios.cantidad) AS total FROM productos  INNER JOIN inventarios  ON productos.id = inventarios.id_producto GROUP BY productos.id, productos.nombre, productos.descripcion ORDER BY total DESC;

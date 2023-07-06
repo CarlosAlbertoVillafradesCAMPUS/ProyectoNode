@@ -62,4 +62,75 @@ con.query(
 )
   });
 
+storageInventarios.put("/trasladar", (req,res)=>{
+
+  const {id_producto,id_bodega_origen, id_bodega_destino,cantidad} = req.body;
+
+  con.query(
+    /*sql*/ `SELECT id, id_producto, id_bodega, cantidad FROM inventarios WHERE id_producto = ? AND id_bodega = ? OR id_producto = ? AND id_bodega = ?`,
+    [id_producto, id_bodega_origen, id_producto, id_bodega_destino],
+
+    (err, data, fil) => {
+      if(cantidad > data[1].cantidad) {
+        res.send("Error!! no se cuenta con la cantidad suficiente del producto")
+      }else{
+        if(data.length != 2) {
+          con.query(
+          /*sql*/ `INSERT INTO inventarios (id, id_bodega, id_producto, cantidad, created_by, update_by, created_at, updated_at, deleted_at) VALUES (88, ?, ?, ?, 11, NULL, NULL, NULL, NULL)`,
+          [id_bodega_destino,id_producto,cantidad],
+
+          (err, datas, fil) => {
+            if (err) {
+              console.error(err);
+              res.status(500).send("Error al insertar el inventario");
+          } else {
+            let newCantidadA = data[1].cantidad - cantidad;
+            con.query(
+              /*sql*/ `UPDATE inventarios SET cantidad = ? WHERE id = ?`,
+              [newCantidadA, data[1].id],
+    
+              (error, datasa, fil) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).send("Error al Modificar bodega A");
+                } else {
+                  res.send("Operacion Exitosa")
+                }
+                }
+            )
+          }
+          }
+          )
+        }else{
+          let newCantidadA = data[1].cantidad - cantidad;
+            con.query(
+              /*sql*/ `UPDATE inventarios SET cantidad = ? WHERE id = ?`,
+              [newCantidadA, data[1].id],
+    
+              (error, datas, fil) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).send("Error al Modificar bodega A");
+                } else {
+                  let newCantidadB = data[0].cantidad + cantidad;
+                  con.query(
+                    /*sql*/ `UPDATE inventarios SET cantidad = ? WHERE id = ?`,
+                    [newCantidadB, data[0].id],
+
+                    (err, datasa, fil) => {
+                      if (err) {
+                        console.error(err);
+                        res.status(500).send("Error al Modificar bodega B");
+                      } else {
+                        res.send("Operacion Exitosa");
+                      }
+                    }
+                  )
+                }
+                }
+            )
+        }
+      }
+    })
+  })
 export default storageInventarios;

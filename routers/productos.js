@@ -22,4 +22,33 @@ storageProductos.get("/", (req,res)=>{
     )
 })
 
+storageProductos.post("/", (req, res) => {
+
+const {id, nombre, descripcion, estado, created_by, update_by, created_at, updated_at, deleted_at} = req.body;
+  con.query(
+    /*sql*/ `INSERT INTO productos (id, nombre, descripcion, estado, created_by, update_by, created_at, updated_at, deleted_at) VALUES(?,?,?,?,?,?,?,?,?)`,
+    [id, nombre, descripcion, estado, created_by, update_by, created_at, updated_at, deleted_at],
+
+      (err, data, fil) => {
+        if (err) {
+          console.error(err);
+          res.status(500).send("Error al agregar el producto");
+        } else {
+          con.query(
+            /*sql*/ `INSERT INTO inventarios (id, id_bodega, id_producto, cantidad, created_by, update_by, created_at, updated_at, deleted_at) VALUES(99, 11, ?, 103, 11, NULL, NULL, '2023-05-26 01:35:52', NULL)`,
+            [id],
+            (error, data, fil) => {
+            if (error) {
+                console.error(error);
+                res.status(500).send("Error al agregar al inventario");
+            } else {
+                res.send("Agregado con exito")
+            }
+            }
+          )
+        }
+      }
+    );
+  });
+
 export default storageProductos;

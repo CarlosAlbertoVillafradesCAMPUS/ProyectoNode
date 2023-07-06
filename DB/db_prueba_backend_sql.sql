@@ -244,6 +244,6 @@ INSERT INTO `historiales` (`id`, `cantidad`, `id_bodega_origen`, `id_bodega_dest
 
 INSERT INTO bodegas (id, nombre, id_responsable, estado, created_by, update_by, created_at, updated_at, deleted_at) VALUES (90, "BodegaHHHH", 16, 1, 16,, "2022-06-02 15:33:48"," " ," ");
 
-SELECT  FROM bodegas;
+SELECT * FROM inventarios;
 
  SELECT productos.id, productos.nombre, productos.descripcion, SUM(inventarios.cantidad) AS total FROM productos  INNER JOIN inventarios  ON productos.id = inventarios.id_producto GROUP BY productos.id, productos.nombre, productos.descripcion ORDER BY total DESC;

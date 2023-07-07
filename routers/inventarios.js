@@ -62,6 +62,15 @@ storageInventarios.post("/", (req, res) => {
 });
 
 storageInventarios.put("/transladar", (req, res) => {
+  
+  // datos del body
+  // {
+  //   "id_producto":18,
+  //   "id_bodega_origen":19,
+  //   "id_bodega_destino":20,
+  //   "cantidad":10
+  // }
+
   //traemos los datos pasados en el body
   const { id_producto, id_bodega_origen, id_bodega_destino, cantidad } = req.body;
 

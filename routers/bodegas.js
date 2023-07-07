@@ -26,14 +26,14 @@ storageBodegas.post("/", (req, res) => {
     /* datos a ingresar en el body del thunder client. IMPORTANTE modificar el id para que no se repita
      {
         "id":86,
-        "nombre":"BodegaJHONA", 
+        "nombre":"BodegaVilla", 
         "id_responsable":16,
         "estado":1,
         "created_by":16,
-        "update_by":"",
+        "update_by":null,
         "created_at":"2022-06-02 15:33:48",
-        "updated_at":"",
-        "deleted_at":""
+        "updated_at":null,
+        "deleted_at":null
     } */
 
 const {id, nombre, id_responsable, estado, created_by, update_by, created_at, updated_at, deleted_at} = req.body;

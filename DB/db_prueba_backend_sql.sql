@@ -244,7 +244,7 @@ INSERT INTO `historiales` (`id`, `cantidad`, `id_bodega_origen`, `id_bodega_dest
 
 INSERT INTO bodegas (id, nombre, id_responsable, estado, created_by, update_by, created_at, updated_at, deleted_at) VALUES (90, "BodegaHHHH", 16, 1, 16,, "2022-06-02 15:33:48"," " ," ");
 
-SELECT * FROM historiales;
+SELECT * FROM bodegas;
 
 SELECT id, id_producto, id_bodega, cantidad FROM inventarios;
 

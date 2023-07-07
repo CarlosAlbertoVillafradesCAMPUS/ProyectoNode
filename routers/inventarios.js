@@ -97,33 +97,39 @@ storageInventarios.put("/transladar", (req, res) => {
         //saber si la bodega a a la que le vamos a pasar el producto ya cuenta con ese producto o no
         if (data.length != 2) {
           con.query(
-            /*sql*/ `INSERT INTO inventarios (id, id_bodega, id_producto, cantidad, created_by, update_by, created_at, updated_at, deleted_at) VALUES (88, ?, ?, ?, 11, NULL, NULL, NULL, NULL)`,
-            [id_bodega_destino, id_producto, cantidad],
-
-            (err, fil) => {
-              if (err) {
-                console.error(err);
-                res.status(500).send("Error al insertar el inventario");
-              } else {
-                let newCantidadA = data[`${positionBodegaOrigen}`].cantidad - cantidad;
-                con.query(
-                  /*sql*/ `UPDATE inventarios SET cantidad = ? WHERE id = ?`,
-                  [newCantidadA, data[`${positionBodegaOrigen}`].id],
-
-                  (error, fil) => {
-                    if (error) {
-                      console.error(error);
-                      res.status(500).send("Error al Modificar bodega A");
-                    } else {
-                      res.send(
-                        "Operacion exitosa: Se movio el producto de una bodega a otra y como ese producto no existia en el inventario de la bodega de destino, se creo"
-                      );
-                    }
+            /*sql*/ `SELECT id FROM inventarios ORDER BY id DESC`,
+            (errors,dataId, fil) => {
+              let newId = dataId[0].id + 1;
+              con.query(
+                /*sql*/ `INSERT INTO inventarios (id, id_bodega, id_producto, cantidad, created_by, update_by, created_at, updated_at, deleted_at) VALUES (?, ?, ?, ?, 11, NULL, NULL, NULL, NULL)`,
+                [newId,id_bodega_destino, id_producto, cantidad],
+    
+                (err, fil) => {
+                  if (err) {
+                    console.error(err);
+                    res.status(500).send("Error al insertar el inventario");
+                  } else {
+                    let newCantidadA = data[`${positionBodegaOrigen}`].cantidad - cantidad;
+                    con.query(
+                      /*sql*/ `UPDATE inventarios SET cantidad = ? WHERE id = ?`,
+                      [newCantidadA, data[`${positionBodegaOrigen}`].id],
+    
+                      (error, fil) => {
+                        if (error) {
+                          console.error(error);
+                          res.status(500).send("Error al Modificar bodega A");
+                        } else {
+                          res.send(
+                            "Operacion exitosa: Se movio el producto de una bodega a otra y como ese producto no existia en el inventario de la bodega de destino, se creo"
+                          );
+                        }
+                      }
+                    );
                   }
-                );
-              }
+                }
+              );
             }
-          );
+          )
         } else {
           //modificar la cantidad del producto para poder actualizar tanto en la bodega de origen como en la de destino
           let newCantidadA = data[`${positionBodegaOrigen}`].cantidad - cantidad;
@@ -148,20 +154,27 @@ storageInventarios.put("/transladar", (req, res) => {
                       res.status(500).send("Error al Modificar bodega B");
                     } else {
                       con.query(
-                        /*sql*/ `INSERT INTO historiales (id, cantidad, id_bodega_origen, id_bodega_destino, id_inventario, created_by, update_by, created_at, updated_at, deleted_at) VALUES(40, ?, ?, ?, ?, 18, NULL, NULL, NULL, NULL)`,
-                        [cantidad, id_bodega_origen, id_bodega_destino, data[`${positionBodegaDestino}`].id],
-
-                        (error, fil) => {
-                          if (error) {
-                            console.error(error);
-                            res.status(500).send("Error al insertar historial");
-                          } else {
-                            res.send(
-                              "Operacion exitosa: Se movio el producto de una bodega a otra y se creo el historial"
-                            );
-                          }
+                        /*sql*/ `SELECT id FROM historiales ORDER BY id DESC`,
+                        (errors,dataIdHidtorial, fil) => {
+                          let newId = dataIdHidtorial[0].id + 1;
+                          con.query(
+                            /*sql*/ `INSERT INTO historiales (id, cantidad, id_bodega_origen, id_bodega_destino, id_inventario, created_by, update_by, created_at, updated_at, deleted_at) VALUES(?, ?, ?, ?, ?, 18, NULL, NULL, NULL, NULL)`,
+                            [newId,cantidad, id_bodega_origen, id_bodega_destino, data[`${positionBodegaDestino}`].id],
+    
+                            (error, fil) => {
+                              if (error) {
+                                console.error(error);
+                                res.status(500).send("Error al insertar historial");
+                              } else {
+                                res.send(
+                                  "Operacion exitosa: Se movio el producto de una bodega a otra y se creo el historial"
+                                );
+                              }
+                            }
+                          );
                         }
-                      );
+                        )
+                      
                     }
                   }
                 );

@@ -25,7 +25,6 @@ storageBodegas.get("/", (req,res)=>{
 storageBodegas.post("/", (req, res) => {
     /* datos a ingresar en el body del thunder client. IMPORTANTE modificar el id para que no se repita
      {
-        "id":86,
         "nombre":"BodegaVilla", 
         "id_responsable":16,
         "estado":1,
@@ -36,20 +35,27 @@ storageBodegas.post("/", (req, res) => {
         "deleted_at":null
     } */
 
-const {id, nombre, id_responsable, estado, created_by, update_by, created_at, updated_at, deleted_at} = req.body;
-  con.query(
-    /*sql*/ `INSERT INTO bodegas (id, nombre, id_responsable, estado, created_by, update_by, created_at, updated_at, deleted_at) VALUES (?,?,?,?,?,?,?,?,?)`,
-    [id, nombre, id_responsable, estado, created_by, update_by, created_at, updated_at, deleted_at],
+const {nombre, id_responsable, estado, created_by, update_by, created_at, updated_at, deleted_at} = req.body;
+con.query(
+  /*sql*/ `SELECT id FROM bodegas ORDER BY id DESC`,
+  (errors,dataId, fil) => {
+    let newId = dataId[0].id + 1;
 
-      (err, data, fil) => {
-        if (err) {
-          console.error(err);
-          res.status(500).send("Error al agregar la bodega");
-        } else {
-          res.send("Agregado con éxito");
+    con.query(
+      /*sql*/ `INSERT INTO bodegas (id, nombre, id_responsable, estado, created_by, update_by, created_at, updated_at, deleted_at) VALUES (?,?,?,?,?,?,?,?,?)`,
+      [newId, nombre, id_responsable, estado, created_by, update_by, created_at, updated_at, deleted_at],
+  
+        (err, data, fil) => {
+          if (err) {
+            console.error(err);
+            res.status(500).send("Error al agregar la bodega");
+          } else {
+            res.send("Agregado con éxito");
+          }
         }
-      }
-    );
+      );
+  }
+)
   });
 
 export default storageBodegas;

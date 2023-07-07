@@ -81,10 +81,9 @@ Este endpoint permite agregar una nueva bodega.
 
 **Parámetros de entrada:**
 
-- `id` : ID único de la bodega.
 - `nombre` : Nombre de la bodega.
 - `id_responsable` : ID del responsable de la bodega.
-- `estado` ): Estado de la bodega.
+- `estado`: Estado de la bodega.
 - `created_by` : ID del usuario que creó la bodega.
 - `update_by` : ID del usuario que actualizó la bodega.
 - `created_at` : Fecha y hora de creación de la bodega en formato "YYYY-MM-DD HH:mm:ss".
@@ -95,7 +94,6 @@ Este endpoint permite agregar una nueva bodega.
 
 ```js
 {
-  "id": 86,
   "nombre": "BodegaVilla",
   "id_responsable": 16,
   "estado": 1,
@@ -109,7 +107,7 @@ Este endpoint permite agregar una nueva bodega.
 
 ## Importante
 
-si el valor el valor es `null`, tener en cuenta que se debe escribir en minuscula y que el `id` no se puede repetir.
+si el valor el valor es `null`, tener en cuenta que se debe escribir en minuscula, no agregar id porque ya se agrego solo por defecto
 
 
 
@@ -147,7 +145,6 @@ por defecto.
 
 **Parámetros de entrada:**
 
-- `id`: ID único del producto.
 - `nombre` : Nombre del producto.
 - `descripcion` : Descripción del producto.
 - `estado`: Estado del producto.
@@ -161,7 +158,6 @@ por defecto.
 
 ```js
 {
-  "id": 1,
   "nombre": "Producto A",
   "descripcion": "Descripción del Producto A",
   "estado": 1,
@@ -175,7 +171,7 @@ por defecto.
 
 ## Importante
 
-Tener en cuenta en el codigo, que al agregar por defecto un inventario del producto recien creado, se coloco un `id` de inventario manualmente y por defecto. entonces si quiere volver a ingresar otro producto debe modificar manualmente ese `id` en el insert  para que no se repita y no les salga error.
+No colocar el id porque el codigo ya lo agrega por defecto.
 
 
 
@@ -202,10 +198,6 @@ Este endpoint permite ingresar o modificar un inventario de producto en una bode
 - Si el producto ya existe en el inventario de la bodega especificada, la cantidad se actualizará sumando la cantidad proporcionada.
 
 - Si el producto no existe en el inventario de la bodega especificada, se creará una nueva entrada en el inventario con la cantidad proporcionada.
-
-  ## Importante
-
-  Tener en cuenta en el codigo, que al agregar un inventario, se coloca un `id` de inventario manualmente y por defecto. entonces si quiere volver a ingresar otro inventario debe modificar manualmente ese `id` en el insert de inventario para que no se repita y no les salga error.
 
   
 
@@ -236,10 +228,6 @@ El endpoint realiza las siguientes operaciones:
 - Si la bodega de destino ya tiene el producto en el inventario, suma la cantidad trasladada al inventario existente.
 - Si la bodega de destino no tiene el producto en el inventario, crea una nueva entrada en el inventario con la cantidad trasladada.
 - Registra un historial de traslado en la tabla de historiales.
-
-## Importante
-
-Tener en cuenta en el codigo, que al agregar un inventario, se coloca un `id` de inventario manualmente y por defecto. entonces si quiere volver a ingresar otro inventario debe modificar manualmente ese `id` en el insert de inventario para que no se repita y no les salga error. esto mismo tambien pasa con el id de historiales, estan puestos manualmente por defecto entonces hay que cambiarlos manualmente para que no bote errores a la hora de agregar otro.
 
 
 

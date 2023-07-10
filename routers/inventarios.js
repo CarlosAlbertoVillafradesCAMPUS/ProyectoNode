@@ -1,8 +1,7 @@
 import dotenv from "dotenv";
 import mysql from "mysql2";
-import { inventarios } from "../controller/inventarios.js";
-import {plainToClass} from "class-transformer";
 import { Router } from "express";
+import validateInventarioPost from "../middleware/validateInventarioPost.js";
 
 const storageInventarios = Router();
 
@@ -15,20 +14,13 @@ storageInventarios.use((req, res, next) => {
   next();
 });
 
-let dataVerificada = undefined;
-storageInventarios.post("/", (req, res, next)=>{
-  try {
-    dataVerificada = plainToClass(inventarios, req.body, {excludeExtraneousValues:true});
-     next();
-  } catch (error) {
-    res.send("Error en el DTO")
-  }
-}, (req, res) => {
 
-  const { id_producto, id_bodega, cantidad} = dataVerificada;
+storageInventarios.post("/", validateInventarioPost, (req, res) => {
+  
+  const { id_producto, id_bodega, cantidad} = req.dataInventario;
 
   con.query(
-    /*sql*/ `SELECT id, id_producto, id_bodega, cantidad FROM inventarios`,
+     `SELECT id, id_producto, id_bodega, cantidad FROM inventarios`,
     (err, data, fil) => {
       let respuesta = false;
       let cantidadTotal;
@@ -43,7 +35,7 @@ storageInventarios.post("/", (req, res, next)=>{
 
       if (respuesta == true) {
         con.query(
-          /*sql*/ `UPDATE inventarios SET id_producto = ?, id_bodega = ?, cantidad = ? WHERE id = ?`,
+           `UPDATE inventarios SET id_producto = ?, id_bodega = ?, cantidad = ? WHERE id = ?`,
           [id_producto, id_bodega, cantidadTotal, idMod],
           (error, data, fil) => {
             if (error) {
@@ -56,7 +48,7 @@ storageInventarios.post("/", (req, res, next)=>{
         );
       } else {
         con.query(
-          /*sql*/ `INSERT INTO inventarios (id, id_bodega, id_producto, cantidad, created_by, update_by, created_at, updated_at, deleted_at) VALUES (108, ?, ?, ?, 11, NULL, NULL, '2023-05-26 01:35:52', NULL)`,
+           `INSERT INTO inventarios (id, id_bodega, id_producto, cantidad, created_by, update_by, created_at, updated_at, deleted_at) VALUES (109, ?, ?, ?, 11, NULL, NULL, '2023-05-26 01:35:52', NULL)`,
           [id_bodega, id_producto, cantidad],
           (error, data, fil) => {
             if (error) {

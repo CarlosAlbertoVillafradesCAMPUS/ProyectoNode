@@ -1,0 +1,6 @@
+{
+    "conventionalCommits.scopes": [
+        "Middleware",
+        "Middleware and DTO"
+    ]
+}

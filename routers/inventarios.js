@@ -1,5 +1,7 @@
 import dotenv from "dotenv";
 import mysql from "mysql2";
+import { inventarios } from "../controller/inventarios.js";
+import {plainToClass} from "class-transformer";
 import { Router } from "express";
 
 const storageInventarios = Router();
@@ -13,8 +15,17 @@ storageInventarios.use((req, res, next) => {
   next();
 });
 
-storageInventarios.post("/", (req, res) => {
-  const { id_producto, id_bodega, cantidad } = req.body;
+let dataVerificada = undefined;
+storageInventarios.post("/", (req, res, next)=>{
+  try {
+    dataVerificada = plainToClass(inventarios, req.body, {excludeExtraneousValues:true});
+     next();
+  } catch (error) {
+    res.send("Error en el DTO")
+  }
+}, (req, res) => {
+
+  const { id_producto, id_bodega, cantidad} = dataVerificada;
 
   con.query(
     /*sql*/ `SELECT id, id_producto, id_bodega, cantidad FROM inventarios`,
@@ -45,7 +56,7 @@ storageInventarios.post("/", (req, res) => {
         );
       } else {
         con.query(
-          /*sql*/ `INSERT INTO inventarios (id, id_bodega, id_producto, cantidad, created_by, update_by, created_at, updated_at, deleted_at) VALUES (95, ?, ?, ?, 11, NULL, NULL, '2023-05-26 01:35:52', NULL)`,
+          /*sql*/ `INSERT INTO inventarios (id, id_bodega, id_producto, cantidad, created_by, update_by, created_at, updated_at, deleted_at) VALUES (108, ?, ?, ?, 11, NULL, NULL, '2023-05-26 01:35:52', NULL)`,
           [id_bodega, id_producto, cantidad],
           (error, data, fil) => {
             if (error) {

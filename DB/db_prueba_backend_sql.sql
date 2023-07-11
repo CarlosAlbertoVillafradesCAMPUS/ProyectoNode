@@ -11,9 +11,9 @@ CREATE TABLE users(
     update_by BIGINT(20) UNSIGNED,
     foto VARCHAR(255),
     password VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP,
-    deleted_at TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE productos(
     id BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY,
@@ -22,9 +22,9 @@ CREATE TABLE productos(
     estado TINYINT(4) NOT NULL,
     created_by BIGINT(20) UNSIGNED,
     update_by BIGINT(20) UNSIGNED,
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP,
-    deleted_at TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE inventarios(
     id BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY,
@@ -33,9 +33,9 @@ CREATE TABLE inventarios(
     cantidad INT(11) NOT NULL,
     created_by BIGINT(20) UNSIGNED,
     update_by BIGINT(20) UNSIGNED,
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP,
-    deleted_at TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE bodegas(
     id BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY,
@@ -44,9 +44,9 @@ CREATE TABLE bodegas(
     estado TINYINT(4) NOT NULL,
     created_by BIGINT(20) UNSIGNED,
     update_by BIGINT(20) UNSIGNED,
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP,
-    deleted_at TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE historiales(
     id BIGINT(20) UNSIGNED NOT NULL PRIMARY KEY,
@@ -56,9 +56,9 @@ CREATE TABLE historiales(
     id_inventario BIGINT(20) UNSIGNED NOT NULL,
     created_by BIGINT(20) UNSIGNED,
     update_by BIGINT(20) UNSIGNED,
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP,
-    deleted_at TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 /* //FOREIGN KEYS Y REALCIONES */
@@ -242,9 +242,9 @@ INSERT INTO `historiales` (`id`, `cantidad`, `id_bodega_origen`, `id_bodega_dest
 (28, 1, 12, 11, 67, NULL, NULL, '2022-07-11 22:17:10', '2022-07-11 22:17:10', NULL),
 (29, 200, 11, 12, 75, 11, NULL, '2022-07-21 21:24:15', '2022-07-21 21:24:15', NULL);
 
-INSERT INTO bodegas (id, nombre, id_responsable, estado, created_by, update_by, created_at, updated_at, deleted_at) VALUES (90, "BodegaHHHH", 16, 1, 16,, "2022-06-02 15:33:48"," " ," ");
+INSERT INTO bodegas (id, nombre, id_responsable, estado, created_by, update_by) VALUES (101, "BodegaHHHH", 16, 1, 16, 16);
 
-SELECT * FROM inventarios;
+SELECT * FROM bodegas;
 
 SELECT id, id_producto, id_bodega, cantidad FROM inventarios;
 

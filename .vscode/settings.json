@@ -1,6 +1,7 @@
 {
     "conventionalCommits.scopes": [
         "Middleware",
-        "Middleware and DTO"
+        "Middleware and DTO",
+        "DB"
     ]
 }

@@ -250,3 +250,5 @@ SELECT id, id_producto, id_bodega, cantidad FROM inventarios;
 
 UPDATE inventarios SET cantidad = ? WHERE id = ?; 
  SELECT productos.id, productos.nombre, productos.descripcion, SUM(inventarios.cantidad) AS total FROM productos  INNER JOIN inventarios  ON productos.id = inventarios.id_producto GROUP BY productos.id, productos.nombre, productos.descripcion ORDER BY total DESC;
+
+ SELECT * FROM inventarios WHERE id_producto = 18 AND id_bodega =19  OR id_producto = 18 AND id_bodega = 12;

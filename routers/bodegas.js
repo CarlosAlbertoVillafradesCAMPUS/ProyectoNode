@@ -1,6 +1,9 @@
 import dotenv from "dotenv";
 import mysql from 'mysql2';
 import {Router} from "express";
+import { bodegasPost } from "../middleware/validateBodega.js";
+
+
 
 const storageBodegas = Router();
 
@@ -22,7 +25,7 @@ storageBodegas.get("/", (req,res)=>{
     )
 })
 
-storageBodegas.post("/", (req, res) => {
+storageBodegas.post("/", bodegasPost,  (req, res) => {
     /* datos a ingresar en el body del thunder client. IMPORTANTE modificar el id para que no se repita
      {
         "nombre":"BodegaVilla", 
@@ -35,27 +38,29 @@ storageBodegas.post("/", (req, res) => {
         "deleted_at":null
     } */
 
-const {nombre, id_responsable, estado, created_by, update_by, created_at, updated_at, deleted_at} = req.body;
-con.query(
-  /*sql*/ `SELECT id FROM bodegas ORDER BY id DESC`,
-  (errors,dataId, fil) => {
-    let newId = dataId[0].id + 1;
+    res.send(JSON.stringify(req.dataBodegas))
 
-    con.query(
-      /*sql*/ `INSERT INTO bodegas (id, nombre, id_responsable, estado, created_by, update_by, created_at, updated_at, deleted_at) VALUES (?,?,?,?,?,?,?,?,?)`,
-      [newId, nombre, id_responsable, estado, created_by, update_by, created_at, updated_at, deleted_at],
+// const {nombre, id_responsable, estado, created_by, update_by, created_at, updated_at, deleted_at} = req.dataBodegas;
+// con.query(
+//   /*sql*/ `SELECT id FROM bodegas ORDER BY id DESC`,
+//   (errors,dataId, fil) => {
+//     let newId = dataId[0].id + 1;
+
+//     con.query(
+//       /*sql*/ `INSERT INTO bodegas (id, nombre, id_responsable, estado, created_by, update_by, created_at, updated_at, deleted_at) VALUES (?,?,?,?,?,?,?,?,?)`,
+//       [newId, nombre, id_responsable, estado, created_by, update_by, created_at, updated_at, deleted_at],
   
-        (err, data, fil) => {
-          if (err) {
-            console.error(err);
-            res.status(500).send("Error al agregar la bodega");
-          } else {
-            res.send("Agregado con éxito");
-          }
-        }
-      );
-  }
-)
+//         (err, data, fil) => {
+//           if (err) {
+//             console.error(err);
+//             res.status(500).send("Error al agregar la bodega");
+//           } else {
+//             res.send("Agregado con éxito");
+//           }
+//         }
+//       );
+//   }
+// )
   });
 
 export default storageBodegas;

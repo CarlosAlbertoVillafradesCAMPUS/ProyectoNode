@@ -1,7 +1,8 @@
 import dotenv from "dotenv";
 import mysql from "mysql2";
 import { Router } from "express";
-import validateInventarioPost from "../middleware/validateInventarioPost.js";
+import  { inventarioPost }  from "../middleware/validateInventarios.js";
+import { inventarioTrasladar } from "../middleware/validateInventarios.js";
 
 const storageInventarios = Router();
 
@@ -15,7 +16,7 @@ storageInventarios.use((req, res, next) => {
 });
 
 
-storageInventarios.post("/", validateInventarioPost, (req, res) => {
+storageInventarios.post("/", inventarioPost, (req, res) => {
   
   const { id_producto, id_bodega, cantidad} = req.dataInventario;
 
@@ -48,23 +49,29 @@ storageInventarios.post("/", validateInventarioPost, (req, res) => {
         );
       } else {
         con.query(
-           `INSERT INTO inventarios (id, id_bodega, id_producto, cantidad, created_by, update_by, created_at, updated_at, deleted_at) VALUES (109, ?, ?, ?, 11, NULL, NULL, '2023-05-26 01:35:52', NULL)`,
-          [id_bodega, id_producto, cantidad],
-          (error, data, fil) => {
-            if (error) {
-              console.error(error);
-              res.status(500).send("Error al ingresar el inventario");
-            } else {
-              res.send("ingresado con exito");
-            }
+          `SELECT id FROM inventarios ORDER BY id DESC`,
+          (err,dataIds,fil)=>{
+            let idNewInventario = dataIds[0].id + 1;
+            con.query(
+              `INSERT INTO inventarios (id, id_bodega, id_producto, cantidad, created_by, update_by, created_at, updated_at, deleted_at) VALUES (?, ?, ?, ?, 11, NULL, NULL, '2023-05-26 01:35:52', NULL)`,
+             [idNewInventario, id_bodega, id_producto, cantidad],
+             (error, data, fil) => {
+               if (error) {
+                 console.error(error);
+                 res.status(500).send("Error al ingresar el inventario");
+               } else {
+                 res.send("ingresado con exito");
+               }
+             }
+           );
           }
-        );
+        )
       }
     }
   );
 });
 
-storageInventarios.put("/transladar", (req, res) => {
+storageInventarios.put("/transladar",inventarioTrasladar, (req, res) => {
   
   // datos del body
   // {
@@ -75,10 +82,11 @@ storageInventarios.put("/transladar", (req, res) => {
   // }
 
   //traemos los datos pasados en el body
-  const { id_producto, id_bodega_origen, id_bodega_destino, cantidad } = req.body;
+
+  const { id_producto, id_bodega_origen, id_bodega_destino, cantidad } = req.dataInventarioTransladar;
 
   con.query(
-    /*sql*/ `SELECT * FROM inventarios WHERE id_producto = ? AND id_bodega = ? OR id_producto = ? AND id_bodega = ?`,
+     `SELECT * FROM inventarios WHERE id_producto = ? AND id_bodega = ? OR id_producto = ? AND id_bodega = ?`,
     [id_producto, id_bodega_origen, id_producto, id_bodega_destino],
 
     (err, data, fil) => {

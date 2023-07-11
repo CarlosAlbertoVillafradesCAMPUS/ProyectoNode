@@ -2,13 +2,25 @@ import {Expose, Type, Transform} from "class-transformer";
 
 export class inventarios{
     @Expose({name: "producto"}) //en el expose es como me llegan los datos y en el contructor va la transformacion al nombre de las columnas de como las voy a utilizar ne el backend
-    @Transform(({value}) => parseInt(value), {toClassOnly:true})  //lod decoradores como transform o type siempre van arriba de las variables, transform es solo para numeros
+    @Transform(({value}) => {
+        if((Math.floor(value)) && typeof value == "number")
+        return Math.floor(value);
+        else throw {status:400, message:"Error en los parametros de entradas"};
+    }, {toClassOnly:true})  
     id_producto:number;
     @Expose({name: "bodega"})
-    @Transform(({value}) => parseInt(value), {toClassOnly:true})
+    @Transform(({value}) => {
+        if((Math.floor(value)) && typeof value == "number")
+        return Math.floor(value);
+        else throw {status:400, message:"Error en los parametros de entrada"};
+    }, {toClassOnly:true})
     id_bodega:number;
     @Expose({name: "cant"})
-    @Transform(({value}) => parseInt(value), {toClassOnly:true}) //dependiendo del dato numerico se debe modificar el parseint o parsefloat
+    @Transform(({value}) => {
+        if((Math.floor(value)) && typeof value == "number")
+        return Math.floor(value);
+        else throw {status:400, message:"Error en los parametros de entradas"};
+    }, {toClassOnly:true})
     cantidad:number;
     constructor(id_producto: number, id_bodega: number, cantidad: number){
         this.id_producto = id_producto;

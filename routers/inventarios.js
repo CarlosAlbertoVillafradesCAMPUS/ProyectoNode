@@ -18,7 +18,7 @@ storageInventarios.use((req, res, next) => {
 
 storageInventarios.post("/", inventarioPost, (req, res) => {
   
-  const { id_producto, id_bodega, cantidad} = req.dataInventario;
+  const { id_producto, id_bodega, cantidad} = req.body;
 
   con.query(
      `SELECT id, id_producto, id_bodega, cantidad FROM inventarios`,
@@ -83,7 +83,7 @@ storageInventarios.put("/transladar",inventarioTrasladar, (req, res) => {
 
   //traemos los datos pasados en el body
 
-  const { id_producto, id_bodega_origen, id_bodega_destino, cantidad } = req.dataInventarioTransladar;
+  const { id_producto, id_bodega_origen, id_bodega_destino, cantidad } = req.body;
 
   con.query(
      `SELECT * FROM inventarios WHERE id_producto = ? AND id_bodega = ? OR id_producto = ? AND id_bodega = ?`,

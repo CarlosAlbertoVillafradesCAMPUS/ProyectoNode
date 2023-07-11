@@ -1,13 +1,15 @@
+import "reflect-metadata";
 import {plainToClass} from "class-transformer";
-import {dtoBodegasPost} from "../controller/dtoBodegasPost.js";
-const bodegasPost = (req,res,next) => {
+import dtoBodegasPost from "../controller/dtoBodegasPost.js";
+
+const bodegaPost = (req,res,next) => {
     try {
         let data = plainToClass(dtoBodegasPost, req.body, {excludeExtraneousValues:true});
-          req.dataBodegas = data;
+          req.body = data;
           next();
       } catch (error) {
-        res.send("Error en el DTO")
+        res.status(error.status).send(error.message)
       }
 };
 
-export { bodegasPost};
+export default bodegaPost;

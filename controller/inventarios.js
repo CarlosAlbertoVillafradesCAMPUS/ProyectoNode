@@ -18,18 +18,31 @@ export class inventarios {
 __decorate([
     Expose({ name: "producto" }) //en el expose es como me llegan los datos y en el contructor va la transformacion al nombre de las columnas de como las voy a utilizar ne el backend
     ,
-    Transform(({ value }) => parseInt(value), { toClassOnly: true }) //lod decoradores como transform o type siempre van arriba de las variables, transform es solo para numeros
-    ,
+    Transform(({ value }) => {
+        if ((Math.floor(value)) && typeof value == "number")
+            return Math.floor(value);
+        else
+            throw { status: 400, message: "Error en los parametros de entradas" };
+    }, { toClassOnly: true }),
     __metadata("design:type", Number)
 ], inventarios.prototype, "id_producto", void 0);
 __decorate([
     Expose({ name: "bodega" }),
-    Transform(({ value }) => parseInt(value), { toClassOnly: true }),
+    Transform(({ value }) => {
+        if ((Math.floor(value)) && typeof value == "number")
+            return Math.floor(value);
+        else
+            throw { status: 400, message: "Error en los parametros de entrada" };
+    }, { toClassOnly: true }),
     __metadata("design:type", Number)
 ], inventarios.prototype, "id_bodega", void 0);
 __decorate([
     Expose({ name: "cant" }),
-    Transform(({ value }) => parseInt(value), { toClassOnly: true }) //dependiendo del dato numerico se debe modificar el parseint o parsefloat
-    ,
+    Transform(({ value }) => {
+        if ((Math.floor(value)) && typeof value == "number")
+            return Math.floor(value);
+        else
+            throw { status: 400, message: "Error en los parametros de entradas" };
+    }, { toClassOnly: true }),
     __metadata("design:type", Number)
 ], inventarios.prototype, "cantidad", void 0);

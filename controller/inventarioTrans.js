@@ -18,21 +18,41 @@ export class inventarioTrans {
 }
 __decorate([
     Expose({ name: "producto" }),
-    Transform(({ value }) => parseInt(value), { toClassOnly: true }),
+    Transform(({ value }) => {
+        if ((Math.floor(value)) && typeof value == "number")
+            return Math.floor(value);
+        else
+            throw { status: 400, message: "Error en los parametros de entradas" };
+    }, { toClassOnly: true }),
     __metadata("design:type", Number)
 ], inventarioTrans.prototype, "id_producto", void 0);
 __decorate([
     Expose({ name: "bodega_origen" }),
-    Transform(({ value }) => parseInt(value), { toClassOnly: true }),
+    Transform(({ value }) => {
+        if ((Math.floor(value)) && typeof value == "number")
+            return Math.floor(value);
+        else
+            throw { status: 400, message: "Error en los parametros de entradas" };
+    }, { toClassOnly: true }),
     __metadata("design:type", Number)
 ], inventarioTrans.prototype, "id_bodega_origen", void 0);
 __decorate([
     Expose({ name: "bodega_destino" }),
-    Transform(({ value }) => parseInt(value), { toClassOnly: true }),
+    Transform(({ value }) => {
+        if ((Math.floor(value)) && typeof value == "number")
+            return Math.floor(value);
+        else
+            throw { status: 400, message: "Error en los parametros de entradas" };
+    }, { toClassOnly: true }),
     __metadata("design:type", Number)
 ], inventarioTrans.prototype, "id_bodega_destino", void 0);
 __decorate([
     Expose({ name: "cant" }),
-    Transform(({ value }) => parseInt(value), { toClassOnly: true }),
+    Transform(({ value }) => {
+        if ((Math.floor(value)) && typeof value == "number")
+            return Math.floor(value);
+        else
+            throw { status: 400, message: "Error en los parametros de entradas" };
+    }, { toClassOnly: true }),
     __metadata("design:type", Number)
 ], inventarioTrans.prototype, "cantidad", void 0);

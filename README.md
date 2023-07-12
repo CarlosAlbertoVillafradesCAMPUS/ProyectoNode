@@ -31,17 +31,17 @@ MY_CONNECT={"host":"", "user":"", "password":"", "database":"", "port":3306}
 
 Puedes probar diferentes rutas accediendo a:
 
-- `http://"hostname":"port"/bodegas` para las rutas relacionadas con bodegas.
+- `http://"hostname":"port"/bodegas/` para las rutas relacionadas con bodegas.
 
-- `http://"hostname":"port"/productos` para las rutas relacionadas con productos.
+- `http://"hostname":"port"/productos/` para las rutas relacionadas con productos.
 
-- `http://"hostname":"port"/inventarios` para las rutas relacionadas con inventarios.
+- `http://"hostname":"port"/inventarios/` para las rutas relacionadas con inventarios.
 
   
 
 # Endpoints de Bodegas
 
-### GET:  `http://"hostname":"port"/productos`
+### GET:  `http://"hostname":"port"/bodegas/`
 
 Este endpoint devuelve la lista de bodegas existentes en orden alfabético ascendente por nombre.
 
@@ -75,45 +75,38 @@ Este endpoint devuelve la lista de bodegas existentes en orden alfabético ascen
 ]
 ```
 
-### POST:  `http://"hostname":"port"/productos`
+### POST:  `http://"hostname":"port"/bodegas/`
 
 Este endpoint permite agregar una nueva bodega.
 
 **Parámetros de entrada:**
 
-- `nombre` : Nombre de la bodega.
-- `id_responsable` : ID del responsable de la bodega.
-- `estado`: Estado de la bodega.
-- `created_by` : ID del usuario que creó la bodega.
-- `update_by` : ID del usuario que actualizó la bodega.
-- `created_at` : Fecha y hora de creación de la bodega en formato "YYYY-MM-DD HH:mm:ss".
-- `updated_at` : Fecha y hora de actualización de la bodega en formato "YYYY-MM-DD HH:mm:ss".
-- `deleted_at` : Fecha y hora de eliminación de la bodega en formato "YYYY-MM-DD HH:mm:ss".
+- `nombre_bodega` : Nombre de la bodega (string).
+- `responsable` : ID del responsable de la bodega (number).
+- `estado_bodega`: Estado de la bodega. (number)
+- `creado_por` : ID del usuario que creó la bodega. (number / null)
+- `modificado_por` : ID del usuario que actualizó la bodega. (number / null)
 
 **Ejemplo:**
 
 ```js
 {
-  "nombre": "BodegaVilla",
-  "id_responsable": 16,
-  "estado": 1,
-  "created_by": 16,
-  "update_by": null,
-  "created_at": "2022-06-02 15:33:48",
-  "updated_at": null,
-  "deleted_at": null
+    "nombre_bodega":"BodegaVilla", 
+    "responsable":16,
+    "estado_bodega":1,
+    "creado_por":16,
+    "modificado_por":null,
 }
 ```
 
 ## Importante
 
-si el valor el valor es `null`, tener en cuenta que se debe escribir en minuscula, no agregar id porque ya se agrego solo por defecto
-
+si el valor el valor es `null`, tener en cuenta que se debe escribir en minuscula.
 
 
 # Endpoints de Productos
 
-### GET `http://"hostname":"port"/productos`
+### GET `http://"hostname":"port"/productos/`
 
 Este endpoint devuelve la lista de productos junto con la suma de la cantidad disponible en inventario para cada producto, ordenados de manera descendente según la cantidad total.
 
@@ -137,7 +130,7 @@ Este endpoint devuelve la lista de productos junto con la suma de la cantidad di
 ]
 ```
 
-### POST `http://"hostname":"port"/productos`
+### POST `http://"hostname":"port"/productos/`
 
 Este endpoint permite agregar un nuevo producto a la tabla de productos y a su vez asignamos
 una cantidad inicial del producto en la tabla inventarios en una de las bodegas
@@ -145,53 +138,47 @@ por defecto.
 
 **Parámetros de entrada:**
 
-- `nombre` : Nombre del producto.
-- `descripcion` : Descripción del producto.
-- `estado`: Estado del producto.
-- `created_by`: ID del usuario que creó el producto.
-- `update_by`: ID del usuario que actualizó el producto.
-- `created_at` : Fecha y hora de creación del producto en formato "YYYY-MM-DD HH:mm:ss".
-- `updated_at`: Fecha y hora de actualización del producto en formato "YYYY-MM-DD HH:mm:ss".
-- `deleted_at`: Fecha y hora de eliminación del producto en formato "YYYY-MM-DD HH:mm:ss".
+- `nombre_producto` : Nombre del producto. (string)
+- `descripcion_producto` : Descripción del producto. (string)
+- `estado_producto`: Estado del producto. (number)
+- `creado_por`: ID del usuario que creó el producto. (number / null)
+- `modificado_por`: ID del usuario que actualizó el producto. (number / null)
 
 **Ejemplo de los datos a pasar:**
 
 ```js
 {
-  "nombre": "Producto A",
-  "descripcion": "Descripción del Producto A",
-  "estado": 1,
-  "created_by": 123,
-  "update_by": null,
-  "created_at": "2022-06-02 15:33:48",
-  "updated_at": null,
-  "deleted_at": null
+  "nombre_producto": "CamisasVilla",
+  "descripcion_producto": "super camisas",
+  "estado_producto": 1,
+  "creado_por": 19,
+  "modificado_por": null
 }
 ```
 
 ## Importante
 
-No colocar el id porque el codigo ya lo agrega por defecto.
+No colocar el id_bodega porque el codigo ya lo agrega por defecto.
 
 
 
 # EndPoints Inventarios
 
-### 1. POST: `http://"hostname":"port"/inventarios`
+### 1. POST: `http://"hostname":"port"/inventarios/`
 
 Este endpoint permite ingresar o modificar un inventario de producto en una bodega. Se espera recibir los siguientes parámetros en el cuerpo de la solicitud:
 
-- `id_producto`: ID del producto.
-- `id_bodega`: ID de la bodega.
-- `cantidad`: Cantidad del producto en el inventario.
+- `producto`: ID del producto. (number)
+- `bodega`: ID de la bodega. (number)
+- `cant`: Cantidad del producto en el inventario. (number)
 
 ##### Ejemplo de solicitud:
 
 ```js
 {
-  "id_producto": 123,
-  "id_bodega": 456,
-  "cantidad": 10
+  "producto": 123,
+  "bodega": 456,
+  "cant": 10
 }
 ```
 
@@ -205,19 +192,19 @@ Este endpoint permite ingresar o modificar un inventario de producto en una bode
 
 Este endpoint permite trasladar una cantidad de producto de una bodega a otra, modificando sus inventarios y creando un historial del traspaso . Se espera recibir los siguientes parámetros en el cuerpo de la solicitud:
 
-- `id_producto`: ID del producto a trasladar.
-- `id_bodega_origen`: ID de la bodega de origen.
-- `id_bodega_destino`: ID de la bodega de destino.
-- `cantidad`: Cantidad del producto a trasladar.
+- `producto`: ID del producto a trasladar. (number)
+- `bodega_origen`: ID de la bodega de origen. (number)
+- `bodega_destino`: ID de la bodega de destino. (number)
+- `cant`: Cantidad del producto a trasladar. (number)
 
 ##### Ejemplo de solicitud:
 
 ```
 {
-  "id_producto": 123,
-  "id_bodega_origen": 456,
-  "id_bodega_destino": 789,
-  "cantidad": 5
+  "producto": 123,
+  "bodega_origen": 456,
+  "bodega_destino": 789,
+  "cant": 5
 }
 ```
 

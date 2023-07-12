@@ -8,17 +8,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Expose, Transform } from "class-transformer";
-export default class dtoBodegasPost {
-    constructor(nombre, id_responsable, estado, created_by, update_by) {
+export default class dtoProductoPost {
+    constructor(nombre, descripcion, estado, created_by, update_by) {
         this.nombre = nombre;
+        this.descripcion = descripcion;
         this.estado = estado;
-        this.id_responsable = id_responsable;
         this.created_by = created_by;
         this.update_by = update_by;
     }
 }
 __decorate([
-    Expose({ name: "nombre_bodega" }),
+    Expose({ name: "nombre_producto" }),
     Transform(({ value }) => {
         if (/^[A-Z-a-z\s]+$/.test(value))
             return value;
@@ -26,27 +26,27 @@ __decorate([
             throw { status: 400, message: "Error en los parametros de entradas" };
     }, { toClassOnly: true }),
     __metadata("design:type", String)
-], dtoBodegasPost.prototype, "nombre", void 0);
+], dtoProductoPost.prototype, "nombre", void 0);
 __decorate([
-    Expose({ name: "responsable" }),
+    Expose({ name: "descripcion_producto" }),
     Transform(({ value }) => {
-        if ((Math.floor(value)) && typeof value == "number")
-            return Math.floor(value);
+        if (/^[A-Z-a-z\s]+$/.test(value))
+            return value;
         else
             throw { status: 400, message: "Error en los parametros de entradas" };
     }, { toClassOnly: true }),
-    __metadata("design:type", Number)
-], dtoBodegasPost.prototype, "id_responsable", void 0);
+    __metadata("design:type", String)
+], dtoProductoPost.prototype, "descripcion", void 0);
 __decorate([
-    Expose({ name: "estado_bodega" }),
+    Expose({ name: "estado_producto" }),
     Transform(({ value }) => {
-        if ((Math.floor(value)) && typeof value == "number")
+        if (Math.floor(value) && typeof value == "number")
             return Math.floor(value);
         else
-            throw { status: 400, message: "Error en los parametros de entradas" };
+            throw { status: 400, message: "Error en los parametros de entrada" };
     }, { toClassOnly: true }),
     __metadata("design:type", Number)
-], dtoBodegasPost.prototype, "estado", void 0);
+], dtoProductoPost.prototype, "estado", void 0);
 __decorate([
     Expose({ name: "creado_por" }),
     Transform(({ value }) => {
@@ -61,7 +61,7 @@ __decorate([
         }
     }, { toClassOnly: true }),
     __metadata("design:type", Number)
-], dtoBodegasPost.prototype, "created_by", void 0);
+], dtoProductoPost.prototype, "created_by", void 0);
 __decorate([
     Expose({ name: "modificado_por" }),
     Transform(({ value }) => {
@@ -76,4 +76,4 @@ __decorate([
         }
     }, { toClassOnly: true }),
     __metadata("design:type", Number)
-], dtoBodegasPost.prototype, "update_by", void 0);
+], dtoProductoPost.prototype, "update_by", void 0);

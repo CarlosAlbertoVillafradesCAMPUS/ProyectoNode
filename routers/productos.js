@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import mysql from 'mysql2';
 import {Router} from "express";
+import productoPost from "../middleware/validateProductos.js";
 
 const storageProductos = Router();
 
@@ -22,16 +23,15 @@ storageProductos.get("/", (req,res)=>{
     )
 })
 
-storageProductos.post("/", (req, res) => {
-
-const {nombre, descripcion, estado, created_by, update_by, created_at, updated_at, deleted_at} = req.body;
+storageProductos.post("/", productoPost, (req, res) => {
+const {nombre, descripcion, estado, created_by, update_by} = req.body;
 con.query(
    /*sql*/`SELECT productos.id FROM productos ORDER BY id DESC`,
    (err,dataId,fil)=>{
     let newIdProducto = dataId[0].id + 1;
     con.query(
-      /*sql*/ `INSERT INTO productos (id, nombre, descripcion, estado, created_by, update_by, created_at, updated_at, deleted_at) VALUES(?,?,?,?,?,?,?,?,?)`,
-      [newIdProducto, nombre, descripcion, estado, created_by, update_by, created_at, updated_at, deleted_at],
+      /*sql*/ `INSERT INTO productos (id, nombre, descripcion, estado, created_by, update_by) VALUES(?,?,?,?,?,?)`,
+      [newIdProducto, nombre, descripcion, estado, created_by, update_by],
   
         (err, data, fil) => {
           if (err) {
@@ -45,7 +45,7 @@ con.query(
                 let newIdInventario = dataIdInventario[0].id + 1;
               
                 con.query(
-                  /*sql*/ `INSERT INTO inventarios (id, id_bodega, id_producto, cantidad, created_by, update_by, created_at, updated_at, deleted_at) VALUES(?, 11, ?, 103, 11, NULL, NULL, '2023-05-26 01:35:52', NULL)`,
+                  /*sql*/ `INSERT INTO inventarios (id, id_bodega, id_producto, cantidad, created_by, update_by) VALUES(?, 11, ?, 103, 11, NULL)`,
                   [newIdInventario, newIdProducto],
                   (error, data, fil) => {
                   if (error) {

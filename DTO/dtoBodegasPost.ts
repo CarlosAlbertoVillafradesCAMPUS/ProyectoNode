@@ -3,7 +3,7 @@ import { Expose, Type, Transform } from "class-transformer";
 export default class dtoBodegasPost{
 
   @Expose({name: "nombre_bodega"})
-  @Transform(({value}) => {if(/^[a-z-A-Z]+$/.test(value)) return value;
+  @Transform(({value}) => {if(/^[A-Z-a-z\s]+$/.test(value)) return value;
    else throw {status:400, message:"Error en los parametros de entradas"};}, {toClassOnly:true}) 
   nombre:string;
 
